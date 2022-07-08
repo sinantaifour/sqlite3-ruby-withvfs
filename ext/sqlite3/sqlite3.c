@@ -65,6 +65,15 @@ static VALUE libversion(VALUE UNUSED(klass))
   return INT2NUM(sqlite3_libversion_number());
 }
 
+static VALUE vfs_register(VALUE mod, VALUE obj)
+{
+  sqlite3_vfs * vfs;
+  Data_Get_Struct(obj, sqlite3_vfs, vfs);
+  sqlite3_vfs_register(vfs, 0);
+
+  return obj;
+}
+
 static VALUE using_sqlcipher(VALUE UNUSED(klass))
 {
 #ifdef USING_SQLCIPHER
@@ -150,14 +159,15 @@ void Init_sqlite3_native()
   init_sqlite3_constants();
   init_sqlite3_database();
   init_sqlite3_statement();
+  init_sqlite3_vfs();
 #ifdef HAVE_SQLITE3_BACKUP_INIT
   init_sqlite3_backup();
 #endif
   rb_define_singleton_method(mSqlite3, "sqlcipher?", using_sqlcipher, 0);
   rb_define_singleton_method(mSqlite3, "libversion", libversion, 0);
   rb_define_singleton_method(mSqlite3, "threadsafe", threadsafe_p, 0);
+  rb_define_singleton_method(mSqlite3, "vfs_register", vfs_register, 1)
   rb_define_const(mSqlite3, "SQLITE_VERSION", rb_str_new2(SQLITE_VERSION));
   rb_define_const(mSqlite3, "SQLITE_VERSION_NUMBER", INT2FIX(SQLITE_VERSION_NUMBER));
   rb_define_const(mSqlite3, "SQLITE_LOADED_VERSION", rb_str_new2(sqlite3_libversion()));
-
 }
