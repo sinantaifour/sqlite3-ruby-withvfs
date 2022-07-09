@@ -126,7 +126,8 @@ static int rbFile_check_reserved_lock(sqlite3_file * ctx, int *pResOut)
 
 static int rbFile_file_control(sqlite3_file * ctx, int op, void *pArg)
 {
-  rb_raise(rb_eRuntimeError, "file control is unsupported");
+  // TODO: Need to pass this to Ruby.
+  return SQLITE_NOTFOUND;
 }
 
 static int rbFile_sector_size(sqlite3_file * ctx)
@@ -186,6 +187,12 @@ static int vfs_open(
   return SQLITE_OK;
 }
 
+static int vfs_delete(sqlite3_vfs * ctx, const char *zName, int syncDir) {
+  // TODO: Need to pass this to Ruby.
+  return SQLITE_OK;
+}
+
+
 static void deallocate(void * vfs)
 {
   xfree(vfs);
@@ -200,6 +207,7 @@ static VALUE allocate(VALUE klass)
   vfs->szOsFile = sizeof(struct rubyFile);
   vfs->zName    = rb_class2name(klass);
   vfs->xOpen    = vfs_open;
+  vfs->xDelete  = vfs_delete;
 
   VALUE self    = Data_Wrap_Struct(klass, NULL, deallocate, vfs);
 
