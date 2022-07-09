@@ -7,22 +7,12 @@ module SQLite3
       def initialize name, flags
         @name  = name
         @flags = flags
-        @locks = Hash.new(0)
-        @mutex = Mutex.new
       end
 
       ###
       # Close the file
       def close
         raise NotImplementedError
-      end
-
-      def reserved_lock?
-        @mutex.synchronize do
-          [LOCK_RESERVED, LOCK_PENDING, LOCK_EXCLUSIVE].any? do |type|
-            @locks[type] > 0
-          end
-        end
       end
 
       ###
@@ -55,24 +45,24 @@ module SQLite3
         raise NotImplementedError
       end
 
+      def reserved_lock?
+        raise NotImplementedError
+      end
+
       def unlock mode
-        @mutex.synchronize do
-          @locks[mode] -= 1
-        end
+        raise NotImplementedError
       end
 
       def lock mode
-        @mutex.synchronize do
-          @locks[mode] += 1
-        end
+        raise NotImplementedError
       end
 
       def sector_size
-        DEFAULT_SECTOR_SIZE
+        raise NotImplementedError
       end
 
       def characteristics
-        0
+        raise NotImplementedError
       end
     end
   end
