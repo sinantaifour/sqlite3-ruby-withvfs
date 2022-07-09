@@ -1,5 +1,4 @@
 require 'sqlite3/vfs/file'
-require 'sqlite3/vfs/stringio'
 
 module SQLite3
   class VFS

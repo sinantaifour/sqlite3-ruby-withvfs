@@ -74,7 +74,6 @@ Gem::Specification.new do |s|
     "lib/sqlite3/version.rb",
     "lib/sqlite3/vfs.rb",
     "lib/sqlite3/vfs/file.rb",
-    "lib/sqlite3/vfs/stringio.rb",
     "test/helper.rb",
     "test/test_backup.rb",
     "test/test_collation.rb",
