@@ -93,6 +93,7 @@ Gem::Specification.new do |s|
     "test/test_sqlite3.rb",
     "test/test_statement.rb",
     "test/test_statement_execute.rb",
+    "test/test_vfs.rb",
   ]
 
   s.extra_rdoc_files = [
